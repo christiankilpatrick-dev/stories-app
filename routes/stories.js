@@ -3,6 +3,7 @@ const router = express.Router();
 const { ensureAuth } = require('../middleware/auth');
 
 const Story = require('../models/Story');
+const User = require('../models/User');
 
 // @desc     Show add page
 // @route    GET /stories/add
@@ -133,9 +134,11 @@ router.get('/user/:userId', ensureAuth, async (req, res) => {
 		})
 			.populate('user')
 			.lean();
-
-		res.render('stories/index', {
+		let userPage = stories[0].user.firstName;
+		console.log(userPage);
+		res.render('stories/userFeed', {
 			stories,
+			userPage,
 		});
 	} catch (err) {
 		console.error(err);
